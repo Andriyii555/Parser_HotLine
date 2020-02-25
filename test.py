@@ -63,11 +63,18 @@ def parse(html, ref):
 
 
 def main():
+    count = 1
     ref_list = read_ref()
     for ref in ref_list:
-        html = get_html(url + str(ref))
-        parse(html, ref)
-
+        card_exist = session.query(HotLine.ref).filter(HotLine.ref == ref).count
+        if not card_exist:
+            html = get_html(url + str(ref))
+            parse(html, ref)
+            print(f'All ref: {len(ref_list)} parsed: {count}')
+            count += 1
+        else:
+            print(f'All ref: {len(ref_list)} parsed: {count}')
+            count += 1
 
 if __name__ == '__main__':
     main()
